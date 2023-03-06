@@ -1,11 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import Form from './src/components/Form';
 import Tasks from './src/components/Tasks';
+import {mokData} from './src/mokData';
 
 const App = () => {
   const [task, setTask] = useState({});
   const [tasks, setTasks] = useState([]);
+  useEffect(() => {
+
+    
+    setTasks(mokData);
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
