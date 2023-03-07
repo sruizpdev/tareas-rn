@@ -1,17 +1,23 @@
-import React from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import React, {useState} from 'react';
 
-const Task = () => {
+import {Text, StyleSheet, View, Button} from 'react-native';
+
+const Task = ({task, setTask, deleteTask}) => {
+  const {id, taskName} = task;
+
+  const handleDelete = () => {
+    console.log(task);
+    deleteTask(id);
+  };
+
   return (
     <View style={styles.container}>
-      
-      <Text> Tarea 1</Text>
-      <Text> Tarea 2</Text>
-      <Text> Tarea 3</Text>
+      <Text>{taskName}</Text>
+      <Button onPress={handleDelete} title="Editar" color="#841584" />
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
-    container: {},
-  });
-export default Task
+  container: {},
+});
+export default Task;

@@ -1,17 +1,23 @@
-import React from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+import React from 'react';
+import { StyleSheet, View} from 'react-native';
+import Task from './Task';
 
-const Tasks = () => {
+
+const Tasks = ({tasks, deleteTask, setTask}) => {
   return (
     <View style={styles.container}>
-      
-      <Text> Tarea 1</Text>
-      <Text> Tarea 2</Text>
-      <Text> Tarea 3</Text>
+      {tasks.map(task => (
+        <Task
+          key={task.id}
+          task={task}
+          setTask={setTask}
+          deleteTask={deleteTask}
+        />
+      ))}
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
-    container: {},
-  });
-export default Tasks
+  container: {},
+});
+export default Tasks;

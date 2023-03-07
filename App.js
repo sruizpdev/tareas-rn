@@ -10,37 +10,43 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    const saveData = async () => {
-      const jsonValue = JSON.stringify(mokData);
-      try {
-        await AsyncStorage.setItem('key', jsonValue);
-      } catch (e) {
-        console.log('error al guardar');
-      }
-    };
-
     const getData = async () => {
       try {
-        const jsonValue = await AsyncStorage.getItem('key');
+        const jsonValue = await AsyncStorage.getItem('tasks');
 
         console.log(JSON.parse(jsonValue));
+        
       } catch (e) {
         console.log('error al sacar el dato de AS');
       }
     };
-    saveData();
+    const saveData = async () => {
+      const jsonValue = JSON.stringify(mokData);
+      try {
+        await AsyncStorage.setItem('tasks', jsonValue);
+      } catch (e) {
+        console.log('error al guardar');
+      }
+    };
     getData();
+    saveData();
 
     setTasks(mokData);
-  }, []);
 
+    
+  }, [tasks]);
+
+  const deleteTask = id => {
+    const updatedTasks = tasks.filter(task => task.id !== id);
+    setTasks([...updatedTasks]);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Tareas</Text>
       </View>
       <Form task={task} setTask={setTask} tasks={tasks} setTasks={setTasks} />
-      <Tasks />
+      <Tasks tasks={tasks} deleteTask={deleteTask} setTask={setTask} />
     </SafeAreaView>
   );
 };
