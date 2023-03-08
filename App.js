@@ -15,7 +15,6 @@ const App = () => {
         const jsonValue = await AsyncStorage.getItem('tasks');
 
         console.log(JSON.parse(jsonValue));
-        
       } catch (e) {
         console.log('error al sacar el dato de AS');
       }
@@ -30,10 +29,6 @@ const App = () => {
     };
     getData();
     saveData();
-
-    setTasks(mokData);
-
-    
   }, [tasks]);
 
   const deleteTask = id => {
