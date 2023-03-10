@@ -7,7 +7,7 @@ const Task = ({task, deleteTask}) => {
   return (
     <View style={styles.container}>
       <Text>{taskName}</Text>
-      <Button onPress={()=>deleteTask(id)} title="Editar" color="#841584" />
+      <Button onPress={()=>deleteTask(id)} title="Eliminar" color="#841584" />
     </View>
   );
 };

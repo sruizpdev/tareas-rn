@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text, Alert, Button, TextInput} from 'react-native';
-import {generateId} from '../helpers';
+import {generateId, storeData} from '../helpers';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Form = ({task, setTask, tasks, setTasks}) => {
   const [taskName, setTaskName] = useState('');
   const [error, setError] = useState(false);
+
   const handleTask = () => {
     if (taskName === '') {
       setError(true);
@@ -14,6 +16,9 @@ const Form = ({task, setTask, tasks, setTasks}) => {
     const taskObject = {
       taskName,
     };
+
+    //todo / No tengo muy claro lo de tener aqui a 'task'
+    //todo / quizá no sea necesario
 
     if (task.id) {
       taskObject.id = task.id;
@@ -27,6 +32,19 @@ const Form = ({task, setTask, tasks, setTasks}) => {
       taskObject.id = generateId();
 
       setTasks([...tasks, taskObject]);
+      console.log('jjjjj', JSON.stringify(tasks));
+
+      const storeData = async value => {
+        try {
+          const jsonValue = JSON.stringify(value);
+          console.log('Justo antes de almacenar', jsonValue);
+          await AsyncStorage.setItem('tasks', jsonValue);
+        } catch (e) {
+          console.log(e);
+        }
+      };
+
+      storeData(tasks);
     }
     setTaskName('');
   };
