@@ -3,14 +3,13 @@ import { StyleSheet, View} from 'react-native';
 import Task from './Task';
 
 
-const Tasks = ({tasks, deleteTask, setTask}) => {
+const Tasks = ({tasks, deleteTask}) => {
   return (
     <View style={styles.container}>
       {tasks.map(task => (
         <Task
           key={task.id}
           task={task}
-          setTask={setTask}
           deleteTask={deleteTask}
         />
       ))}

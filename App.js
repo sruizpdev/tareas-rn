@@ -13,23 +13,13 @@ const App = () => {
     const getData = async () => {
       try {
         const jsonValue = await AsyncStorage.getItem('tasks');
-
-        console.log(JSON.parse(jsonValue));
+        return jsonValue != null ? JSON.parse(jsonValue) : [];
       } catch (e) {
-        console.log('error al sacar el dato de AS');
+        console.log(e);
       }
     };
-    const saveData = async () => {
-      const jsonValue = JSON.stringify(mokData);
-      try {
-        await AsyncStorage.setItem('tasks', jsonValue);
-      } catch (e) {
-        console.log('error al guardar');
-      }
-    };
-    getData();
-    saveData();
-  }, [tasks]);
+   
+  }, []);
 
   const deleteTask = id => {
     const updatedTasks = tasks.filter(task => task.id !== id);
@@ -41,7 +31,7 @@ const App = () => {
         <Text style={styles.title}>Tareas</Text>
       </View>
       <Form task={task} setTask={setTask} tasks={tasks} setTasks={setTasks} />
-      <Tasks tasks={tasks} deleteTask={deleteTask} setTask={setTask} />
+      <Tasks tasks={tasks} deleteTask={deleteTask} />
     </SafeAreaView>
   );
 };
