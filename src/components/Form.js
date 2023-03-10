@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {StyleSheet, View, Text, Alert, Button, TextInput} from 'react-native';
 import {generateId, storeData} from '../helpers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,7 +7,22 @@ const Form = ({task, setTask, tasks, setTasks}) => {
   const [taskName, setTaskName] = useState('');
   const [error, setError] = useState(false);
 
+
+  useEffect(() => {
+    if (Object.keys(task).length > 0) {
+      setTaskName(task.taskName);
+    }
+  }, [task]);
   const handleTask = () => {
+    const storeData = async value => {
+      try {
+        const jsonValue = JSON.stringify(value);
+        console.log('Justo antes de almacenar', jsonValue);
+        await AsyncStorage.setItem('tasks', jsonValue);
+      } catch (e) {
+        console.log(e);
+      }
+    };
     if (taskName === '') {
       setError(true);
       return;
@@ -17,8 +32,7 @@ const Form = ({task, setTask, tasks, setTasks}) => {
       taskName,
     };
 
-    //todo / No tengo muy claro lo de tener aqui a 'task'
-    //todo / quizá no sea necesario
+    
 
     if (task.id) {
       taskObject.id = task.id;
@@ -32,17 +46,6 @@ const Form = ({task, setTask, tasks, setTasks}) => {
       taskObject.id = generateId();
 
       setTasks([...tasks, taskObject]);
-      console.log('jjjjj', JSON.stringify(tasks));
-
-      const storeData = async value => {
-        try {
-          const jsonValue = JSON.stringify(value);
-          console.log('Justo antes de almacenar', jsonValue);
-          await AsyncStorage.setItem('tasks', jsonValue);
-        } catch (e) {
-          console.log(e);
-        }
-      };
 
       storeData(tasks);
     }
@@ -57,7 +60,11 @@ const Form = ({task, setTask, tasks, setTasks}) => {
           value={taskName}
           onChangeText={setTaskName}
         />
-        <Button onPress={handleTask} title="Nueva tarea" color="#841584" />
+        <Button
+          onPress={handleTask}
+          title={task.id ? 'Editar' : 'Nueva tarea'}
+          color="#841584"
+        />
       </View>
     </View>
   );

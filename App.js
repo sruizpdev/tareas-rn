@@ -43,7 +43,7 @@ const App = () => {
         <Text style={styles.title}>Tareas</Text>
       </View>
       <Form task={task} setTask={setTask} tasks={tasks} setTasks={setTasks} />
-      <Tasks tasks={tasks} deleteTask={deleteTask} />
+      <Tasks setTask={setTask} tasks={tasks} deleteTask={deleteTask} />
     </SafeAreaView>
   );
 };
