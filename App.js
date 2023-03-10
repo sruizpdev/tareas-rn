@@ -4,7 +4,6 @@ import Form from './src/components/Form';
 import Tasks from './src/components/Tasks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 const App = () => {
   const [task, setTask] = useState({});
   const [tasks, setTasks] = useState([]);
@@ -19,36 +18,25 @@ const App = () => {
       }
     };
     getData().then(response => setTasks(response));
-    
-    const getAllKeys = async () => {
-      let keys = [];
-      try {
-        keys = await AsyncStorage.getAllKeys();
-      } catch (e) {
-        console.log(e);
-      }
-      console.log('Esto es lo que hay en AsyncStorage: ', keys);
-    };
-    getAllKeys();
   }, []);
 
   const deleteTask = id => {
+    const updatedTasks = tasks.filter(task => task.id !== id);
+    setTasks([...updatedTasks]);
+  };
 
+  useEffect(() => {
     const storeData = async value => {
       try {
         const jsonValue = JSON.stringify(value);
-        console.log('Justo antes de almacenar', jsonValue);
         await AsyncStorage.setItem('tasks', jsonValue);
       } catch (e) {
         console.log(e);
       }
     };
-
-    
-    const updatedTasks = tasks.filter(task => task.id !== id);
-    setTasks([...updatedTasks]);
     storeData(tasks);
-  };
+  }, [tasks]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
