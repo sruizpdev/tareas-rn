@@ -1,5 +1,13 @@
-import React, {useState,useEffect} from 'react';
-import {StyleSheet, View, Text, Alert, Button, TextInput} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Alert,
+  Button,
+  TextInput,
+  Pressable,
+} from 'react-native';
 import {generateId, storeData} from '../helpers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -7,12 +15,12 @@ const Form = ({task, setTask, tasks, setTasks}) => {
   const [taskName, setTaskName] = useState('');
   const [error, setError] = useState(false);
 
-
   useEffect(() => {
     if (Object.keys(task).length > 0) {
       setTaskName(task.taskName);
     }
   }, [task]);
+
   const handleTask = () => {
     const storeData = async value => {
       try {
@@ -31,8 +39,6 @@ const Form = ({task, setTask, tasks, setTasks}) => {
     const taskObject = {
       taskName,
     };
-
-    
 
     if (task.id) {
       taskObject.id = task.id;
@@ -53,31 +59,45 @@ const Form = ({task, setTask, tasks, setTasks}) => {
   };
   return (
     <View style={styles.container}>
-      <View sytle={styles.field}>
-        <TextInput
-          style={styles.input}
-          placeholder="Introduce la tarea"
-          value={taskName}
-          onChangeText={setTaskName}
-        />
-        <Button
-          onPress={handleTask}
-          title={task.id ? 'Editar' : 'Nueva tarea'}
-          color="#841584"
-        />
-      </View>
+      <TextInput
+        style={styles.input}
+        placeholder="Introduce una nueva tarea"
+        value={taskName}
+        onChangeText={setTaskName}
+      />
+      <Pressable onPress={handleTask} style={styles.btnNewTask}>
+        <Text style={styles.btnNewTaskText}>{task.id ? '-' : '+'}</Text>
+      </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {paddingHorizontal: 10},
-  field: {},
+  container: {
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    columnGap: 10,
+    justifyContent:'space-between'
+    ,marginBottom:30
+  },
+
   input: {
     borderWidth: 1,
-    padding: 15,
+    paddingLeft: 20,
     fontSize: 20,
-    borderRadius: 10,
+    borderRadius:50,
+    width:'80%'
   },
+  btnNewTask: {
+    backgroundColor: 'green',
+    paddingHorizontal: 10,
+    width:50,
+    height:50,
+    borderRadius: 100,
+    justifyContent:'center',
+    alignItems:'center'
+    
+  },
+  btnNewTaskText: {fontWeight:'bold',fontSize:30, color: 'white'},
 });
 export default Form;
